@@ -1,0 +1,418 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EmpresaType {
+  SEDE
+  FILIAL
+}
+
+enum RegimeIva {
+  NAO_SUJEITO
+  SIMPLIFICADO
+  GERAL
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  name            String
+  email           String    @unique
+  emailVerifiedAt DateTime? @map("email_verified_at")
+  avatar          String?
+  password        String    @default("000000")
+  active          Boolean   @default(true)
+  isSuperAdmin    Boolean   @default(false) @map("is_super_admin")
+  prazoSenha      DateTime? @map("prazo_senha")
+  resetSentAt     Boolean   @default(false) @map("reset_sentAt")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  profiles UserProfile[]
+  token    Token[]
+
+  @@map("users")
+}
+
+enum TokenType {
+  PASSWORD_RECOVER
+}
+
+model Token {
+  code      String    @id @unique
+  type      TokenType
+  userId    Int       @map("user_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tokens")
+}
+
+model Permission {
+  id                 Int              @id @default(autoincrement())
+  slug               String           @unique
+  description        String?
+  profilePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+
+  usersProfiles   UserProfile[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model UserProfile {
+  roleId Int @map("role_id")
+  userId Int @map("user_id")
+
+  role  Role  @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  users User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, userId])
+  @@map("user_profiles")
+}
+
+model RolePermission {
+  roleId       Int @map("role_id")
+  permissionId Int @map("permission_id")
+
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model Country {
+  id            Int            @id @default(autoincrement())
+  name          String
+  code          String         @unique
+  provincias    Provincia[]
+  organizations Organization[]
+  Fornecedor    Fornecedor[]
+  Cliente       Cliente[]
+
+  @@map("countries")
+}
+
+model Artigo {
+  id            Int     @id @default(autoincrement())
+  name          String
+  imagem        String?
+  categoryId    Int?
+  subCategoryId Int?
+  unidadeId     Int?
+  stock_min     Float?
+  stock_max     Float?
+  familia       Familia
+  estado        Estado
+
+  category    Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  subCategory SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
+
+  AreaArtigo        AreaArtigo[]
+  ArtigoCodigoBarra ArtigoCodigoBarra[]
+  Unidade           Unidade?            @relation(fields: [unidadeId], references: [id], onDelete: SetNull)
+  ArtigoBarCode     ArtigoBarCode[]
+}
+
+model AreaArtigo {
+  id       Int  @id @default(autoincrement())
+  artigoId Int
+  area     Area
+
+  artigo Artigo @relation(fields: [artigoId], references: [id])
+}
+
+model ArtigoCodigoBarra {
+  id          Int    @id @default(autoincrement())
+  artigoId    Int
+  forncedorId Int
+  codigoBarra String
+
+  fornecedor Fornecedor @relation(fields: [forncedorId], references: [id])
+  artigo     Artigo     @relation(fields: [artigoId], references: [id])
+}
+
+enum Familia {
+  PRODUTO
+  SERVICO
+}
+
+enum Area {
+  COMERCIO_GERAL
+  RESTAURANTE
+  HOTELARIA
+  OFICINA
+}
+
+model Provincia {
+  id        Int    @id @default(autoincrement())
+  countryId Int
+  name      String
+
+  countries     Country        @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  organizations Organization[]
+  Loja          Loja[]
+
+  @@map("provincias")
+}
+
+model Organization {
+  id               Int         @id @default(autoincrement())
+  codigo           String      @unique
+  name             String
+  type             EmpresaType
+  avatar           String?
+  countryId        Int
+  provinciaId      Int
+  endereco         String?
+  cidade           String?
+  telefone         String      @unique
+  telefone1        String?     @unique
+  email            String?
+  nif              String      @unique
+  cae              String?
+  numAlvara        String?     @map("num_alvara")
+  regimeIva        RegimeIva   @map("regime_iva")
+  indicadorFactura String      @map("indicador_factura")
+
+  provincias Provincia @relation(fields: [provinciaId], references: [id])
+  countries  Country   @relation(fields: [countryId], references: [id])
+
+  @@map("organizations")
+}
+
+model Unidade {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Artigo Artigo[]
+}
+
+model Category {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  SubCategory SubCategory[]
+  Artigo      Artigo[]
+}
+
+model SubCategory {
+  id         Int    @default(autoincrement())
+  categoryId Int
+  name       String @unique
+
+  category Category @relation(fields: [categoryId], references: [id])
+  Artigo   Artigo[]
+
+  @@id([id])
+}
+
+model ImpostType {
+  id   Int         @id @default(autoincrement())
+  name String
+  tipo TipoAGT
+  tax  ImpostTax[]
+}
+
+model ImpostTax {
+  id        Int      @id @default(autoincrement())
+  impostId  Int
+  value     Decimal
+  type      String
+  createdAt DateTime @default(now())
+
+  impost ImpostType @relation(fields: [impostId], references: [id], onDelete: Cascade)
+}
+
+model Fornecedor {
+  id           Int        @id @default(autoincrement())
+  entidadeId   Int
+  countryId    Int
+  telefone     String
+  telefone2    String?
+  whatsapp     String?
+  address      String?
+  email        String?
+  subAccountId Int
+  subAcount    SubAccount @relation(fields: [subAccountId], references: [id])
+  estado       Estado
+
+  country           Country             @relation(fields: [countryId], references: [id])
+  entidadeTerceiros EntidadeTerceiros   @relation(fields: [entidadeId], references: [id])
+  artigoBarCode     ArtigoBarCode[]
+  ArtigoCodigoBarra ArtigoCodigoBarra[]
+}
+
+model EntidadeTerceiros {
+  id                  Int               @id @default(autoincrement())
+  name                String
+  tipo                TipoEntidade
+  identificacao       String
+  tipodeIdentificacao TipoIdentificacao
+
+  Fornecedor Fornecedor[]
+  Cliente    Cliente[]
+}
+
+enum TipoEntidade {
+  SINGULAR
+  COLECTIVO
+}
+
+enum TipoIdentificacao {
+  NIF
+  BI
+  CARTAO_DE_RESIDENTE
+  PASSAPORTE
+}
+
+enum TipoDesconto {
+  COMERCIAL
+  FINANCEIRO
+  DIVERSO
+  NENHUM
+}
+
+enum Estado {
+  ACTIVO
+  REMOVIDO
+}
+
+model Cliente {
+  id                  Int          @id @default(autoincrement())
+  entidadeId          Int
+  countryId           Int
+  telefone            String
+  telefone2           String?
+  whatsapp            String?
+  endereco            String?
+  email               String?
+  subAccountId        Int          @map("sub_accountId")
+  tipoDesconto        TipoDesconto @map("tipo_desconto")
+  valorDesconto       Float?       @map("valor_desconto")
+  percentagemDesconto Float?       @map("percentagem_desconto")
+  efectuaRetencao     Boolean      @map("efectua_retencao")
+  saldo               Float
+  limiteSaldo         Float
+  limiteCredito       Float
+  estado              Estado
+
+  country    Country?           @relation(fields: [countryId], references: [id])
+  subAccount SubAccount         @relation(fields: [subAccountId], references: [id])
+  entidade   EntidadeTerceiros? @relation(fields: [entidadeId], references: [id])
+}
+
+enum DescontoType {
+  COMERCIAL
+  FINANCEIRO
+  DIVERSO
+  NENHUM
+}
+
+model ArtigoBarCode {
+  id           Int    @id @default(autoincrement())
+  artigoId     Int
+  fornecedorId Int
+  barCode      String
+
+  fornecedor Fornecedor @relation(fields: [fornecedorId], references: [id])
+  artigo     Artigo?    @relation(fields: [artigoId], references: [id])
+}
+
+model Armazem {
+  id              Int     @id @default(autoincrement())
+  name            String
+  lojaId          Int
+  description     String?
+  localidade      String?
+  bloqueioEntrada Boolean
+  bloqueioSaida   Boolean
+  loja            Loja    @relation(fields: [lojaId], references: [id])
+}
+
+model Loja {
+  id           Int       @id @default(autoincrement())
+  name         String
+  indentificao String
+  address      String
+  provinciaId  Int
+  email        String
+  telefone     String
+  telefone2    String?
+  provincia    Provincia @relation(fields: [provinciaId], references: [id])
+  Armazem      Armazem[]
+}
+
+enum ClasseEstado {
+  ACTIVO
+  INATIVO
+}
+
+model Classe {
+  id     Int          @id @default(autoincrement())
+  numero String
+  name   String
+  estado ClasseEstado
+
+  account Account[]
+}
+
+model Account {
+  id       Int          @id @default(autoincrement())
+  name     String
+  numero   String
+  classeId Int
+  estado   ClasseEstado
+
+  classe      Classe       @relation(fields: [classeId], references: [id])
+  subAccounts SubAccount[]
+}
+
+model SubAccount {
+  id          Int          @id @default(autoincrement())
+  numero      String       @unique
+  description String
+  accountId   Int?
+  estado      String
+  account     Account?     @relation(fields: [accountId], references: [id])
+  Cliente     Cliente[]
+  Fornecedor  Fornecedor[]
+}
+
+enum TipoAGT {
+  IVA
+  IS
+  NS
+}
+
+model Isencao {
+  id                Int      @id @default(autoincrement())
+  codIsencao        String
+  mencaoConstarDoc  String
+  normaAplicavel    String
+  description       String
+  regimeGeral       Boolean
+  regimeTransitorio Boolean
+  regimeNaoSujeicao Boolean
+  status            Boolean
+  createdAt         DateTime @default(now()) @map("created_At")
+  updatedAt         DateTime @default(now()) @map("updated_At")
+}
