@@ -56,7 +56,7 @@ export async function auth(app: FastifyInstance) {
           },
         },
       )
-
+      console.log("logado")
       return reply.status(201).send({
         user: {
           id: userFromEmail.id,

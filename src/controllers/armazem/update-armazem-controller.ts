@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import { updateArmazemModel } from '@/models/armazem/update-armazem-model'
 import { auth } from '@/routes/middlewares/auth'
-import { getErrorMessage } from '@/utils/get-error-message'
+import { getError } from '@/utils/error-utils'
 import { Prisma } from '@/utils/prisma-throws'
 
 export async function updateArmazemController(app: FastifyInstance) {
@@ -57,13 +57,14 @@ export async function updateArmazemController(app: FastifyInstance) {
       async (request, reply) => {
         await request.verifyPermission('update-armazem')
         const { armazemId } = request.params
-        await Prisma.armazem.findError(armazemId)
         const data = request.body
         try {
+          await Prisma.armazem.findError(armazemId)
           const armazem = await updateArmazemModel({ data, id: armazemId })
           return reply.code(201).send(armazem)
         } catch (error) {
-          throw new BadRequestError(getErrorMessage(error))
+          const { message } = getError(error)
+          throw new BadRequestError(message)
         }
       },
     )

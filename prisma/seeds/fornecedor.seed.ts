@@ -19,7 +19,7 @@ export async function seedFornecedor() {
       telefone: '999999999',
       subAccountId: subAccount.id,
       estado: 'ACTIVO',
-      countryId: angolaId.id,
+      countryCode: angolaId.code,
     },
   })
   console.log('Fornecedor consumidor diferenciado seeded!')

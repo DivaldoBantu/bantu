@@ -2,8 +2,10 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/_errors/bad-request-error'
 import { createLojaModel } from '@/models/loja/create-loja-model'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 
 export async function createLojaController(app: FastifyInstance) {
   app
@@ -18,7 +20,7 @@ export async function createLojaController(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
           body: z.object({
             name: z.string(),
-            indentificao: z.string(),
+            identificacao: z.string(),
             address: z.string(),
             provinciaId: z.number(),
             telefone: z.string(),
@@ -29,7 +31,7 @@ export async function createLojaController(app: FastifyInstance) {
             201: z.object({
               id: z.number(),
               name: z.string(),
-              indentificao: z.string(),
+              identificacao: z.string(),
               address: z.string(),
               provinciaId: z.number(),
               telefone: z.string(),
@@ -45,7 +47,10 @@ export async function createLojaController(app: FastifyInstance) {
         try {
           const loja = await createLojaModel(data)
           return reply.code(201).send(loja)
-        } catch (error) {}
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
+        }
       },
     )
 }

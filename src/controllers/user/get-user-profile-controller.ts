@@ -5,6 +5,8 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import { getUserProfileModel } from '@/models/user/get-user-profile-model'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
+import { Prisma } from '@/utils/prisma-throws'
 export async function getProfile(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
@@ -14,7 +16,7 @@ export async function getProfile(app: FastifyInstance) {
       {
         schema: {
           tags: ['Settings'],
-          summary: 'Get authenticated user profile',
+          summary: 'Pegar perfil do usuário logado',
           security: [{ bearerAuth: [] }],
           response: {
             200: z.object({
@@ -30,11 +32,16 @@ export async function getProfile(app: FastifyInstance) {
       },
       async (request, reply) => {
         const userId = await request.getCurrentUserId()
-        const user = await getUserProfileModel(userId)
-        console.log(user)
-        if (!user) throw new BadRequestError('usuário não encontrado.')
 
-        return reply.send({ user })
+        try {
+          await Prisma.user.findError(userId)
+          const user = await getUserProfileModel(userId)
+          if (!user) return
+          return reply.send({ user })
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
+        }
       },
     )
 }

@@ -2,9 +2,10 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/_errors/bad-request-error'
 import { getLojaModel } from '@/models/loja/get-loja-model'
 import { auth } from '@/routes/middlewares/auth'
-import { getErrorMessage } from '@/utils/get-error-message'
+import { getError } from '@/utils/error-utils'
 import { Prisma } from '@/utils/prisma-throws'
 
 export async function getArmazemController(app: FastifyInstance) {
@@ -39,16 +40,15 @@ export async function getArmazemController(app: FastifyInstance) {
       },
       async (request, reply) => {
         const { armazemId } = request.params
-        // getArmazemModel
         await request.verifyPermission('read-armazem')
 
-        await Prisma.armazem.findError(armazemId)
-
         try {
-          const loja = await getLojaModel(armazemId)
-          return reply.status(204).send(loja)
+          await Prisma.armazem.findError(armazemId)
+          const armazem = await getLojaModel(armazemId)
+          return reply.status(204).send(armazem)
         } catch (error) {
-          return reply.send(getErrorMessage(error))
+          const { message } = getError(error)
+          throw new BadRequestError(message)
         }
       },
     )

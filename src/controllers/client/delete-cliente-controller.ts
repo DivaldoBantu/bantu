@@ -14,7 +14,7 @@ export async function deleteClienteController(app: FastifyInstance) {
       '/:clientId',
       {
         schema: {
-          tags: ['cliente'],
+          tags: ['Cliente'],
           summary: 'Apagar um cliente',
           security: [{ bearerAuth: [] }],
           params: z.object({

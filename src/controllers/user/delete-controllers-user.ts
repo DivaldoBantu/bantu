@@ -2,8 +2,10 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/_errors/bad-request-error'
 import { deleteUserModel } from '@/models/user/delete-user-model'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 import { Prisma } from '@/utils/prisma-throws'
 
 export async function deleteControllersUser(app: FastifyInstance) {
@@ -40,12 +42,14 @@ export async function deleteControllersUser(app: FastifyInstance) {
         const { memberId } = request.params
         await request.verifyPermission('delete-user')
 
-        const deleteUser = await Prisma.user.findError(memberId)
-        if (!deleteUser) {
-          throw new Error('User not found')
+        try {
+          await Prisma.user.findError(memberId)
+          await deleteUserModel(memberId)
+          return reply.status(204).send('Usuario deletado com sucesso')
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
         }
-        deleteUserModel(memberId)
-        return reply.status(204).send('Usuario deletado com sucesso')
       },
     )
 }

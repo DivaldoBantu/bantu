@@ -2,15 +2,17 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/_errors/bad-request-error'
 import { listArmazemModel } from '@/models/armazem/list-armazem-model'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 
 export async function listArmazemController(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '',
+      's',
       {
         schema: {
           tags: ['Armazem'],
@@ -36,8 +38,13 @@ export async function listArmazemController(app: FastifyInstance) {
       async (request, reply) => {
         await request.verifyPermission('list-armazem')
 
-        const armazem = await listArmazemModel()
-        return reply.code(200).send({ armazem })
+        try {
+          const armazem = await listArmazemModel()
+          return reply.code(200).send({ armazem })
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
+        }
       },
     )
 }

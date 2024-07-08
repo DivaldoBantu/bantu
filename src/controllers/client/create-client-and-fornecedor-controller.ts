@@ -13,19 +13,19 @@ export async function createClienteAndFornecedorController(
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .post(
-      'and-fornecedor',
+      '-and-entidade',
       {
         schema: {
-          tags: ['cliente'],
+          tags: ['Cliente'],
           summary: 'criar cliente a e uma entidade',
           security: [{ bearerAuth: [] }],
           body: z.object({
             countryId: z.number(),
             telefone: z.string(),
-            telefone2: z.string().optional(),
-            whatsapp: z.string().optional(),
-            endereco: z.string().optional(),
-            email: z.string().email().optional(),
+            telefone2: z.string().optional().nullable(),
+            whatsapp: z.string().optional().nullable(),
+            endereco: z.string().optional().nullable(),
+            email: z.string().email().optional().nullable(),
             subAccountId: z.number(),
             entidade: z.object({
               name: z.string(),
@@ -44,8 +44,8 @@ export async function createClienteAndFornecedorController(
               'DIVERSO',
               'NENHUM',
             ]),
-            valorDesconto: z.number().optional(),
-            percentagemDesconto: z.number().optional(),
+            valorDesconto: z.number().optional().nullable(),
+            percentagemDesconto: z.number().optional().nullable(),
             efectuaRetencao: z.boolean(),
             saldo: z.number(),
             limiteSaldo: z.number(),

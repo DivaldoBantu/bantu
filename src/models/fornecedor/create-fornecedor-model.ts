@@ -18,10 +18,10 @@ export async function createFornecedorAndEntidadeModel({
   entidade,
 }: props1) {
   const { id } = await createEntidadeModel({ entidade })
-  await createFornecedor({ fornecedor, entidadeId: id })
+  await createFornecedorModel({ fornecedor, entidadeId: id })
 }
 
-async function createFornecedor({
+export async function createFornecedorModel({
   entidadeId,
   fornecedor: { ...rest },
 }: props) {

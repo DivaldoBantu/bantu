@@ -2,15 +2,17 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/_errors/bad-request-error'
 import { listLojaModel } from '@/models/loja/list-loja-model'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 
 export async function listLojasController(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '',
+      's',
       {
         schema: {
           tags: ['Loja'],
@@ -22,7 +24,7 @@ export async function listLojasController(app: FastifyInstance) {
                 .object({
                   id: z.number(),
                   name: z.string(),
-                  indentificao: z.string(),
+                  identificacao: z.string(),
                   address: z.string(),
                   provinciaId: z.number(),
                   telefone: z.string(),
@@ -37,8 +39,13 @@ export async function listLojasController(app: FastifyInstance) {
       async (request, reply) => {
         await request.verifyPermission('list-loja')
 
-        const lojas = await listLojaModel()
-        return reply.code(200).send({ lojas })
+        try {
+          const lojas = await listLojaModel()
+          return reply.code(200).send({ lojas })
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
+        }
       },
     )
 }

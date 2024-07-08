@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import { deleteLojaModel } from '@/models/loja/delete-loja-model'
 import { auth } from '@/routes/middlewares/auth'
-import { getErrorMessage } from '@/utils/get-error-message'
+import { getError } from '@/utils/error-utils'
 import { Prisma } from '@/utils/prisma-throws'
 
 export async function deleteLojaController(app: FastifyInstance) {
@@ -13,7 +13,7 @@ export async function deleteLojaController(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .delete(
-      '/:clientId',
+      '/:lojaId',
       {
         schema: {
           tags: ['Loja'],
@@ -42,12 +42,13 @@ export async function deleteLojaController(app: FastifyInstance) {
         const { lojaId } = request.params
         await request.verifyPermission('delete-loja')
 
-        await Prisma.loja.findError(lojaId)
         try {
+          await Prisma.loja.findError(lojaId)
           await deleteLojaModel(lojaId)
           return reply.status(204).send({ message: 'Loja apagada com sucesso' })
         } catch (error) {
-          throw new BadRequestError(getErrorMessage(error))
+          const { message } = getError(error)
+          throw new BadRequestError(message)
         }
       },
     )

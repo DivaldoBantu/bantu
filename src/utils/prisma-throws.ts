@@ -209,6 +209,7 @@ class Fornecedor {
   }
 }
 
+
 class Entidade {
   async find(id: number) {
     const fornecedor = await prisma.entidadeTerceiros.findUnique({

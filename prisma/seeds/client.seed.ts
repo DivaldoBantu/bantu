@@ -24,7 +24,7 @@ export async function seedClient() {
       limiteSaldo: 0,
       limiteCredito: 0,
       estado: 'ACTIVO',
-      countryId: angolaId.id,
+      countryCode: angolaId.code,
     },
   })
   console.log('Cliente consumidor final seeded!')

@@ -1,12 +1,33 @@
+import { BadRequestError } from '@/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
-import type { cliente } from '@/types/global'
 
-export async function getClientModel(userId: number) {
-  const client = await prisma.cliente.findFirst({
+export async function getClientModel(id: number) {
+  const client = await prisma.cliente.findUnique({
     where: {
-      id: userId,
+      id,
+    },
+    select: {
+      id: true,
+      entidadeId: true,
+      entidade: {
+        select: {
+          name: true,
+          identificacao: true,
+          tipodeIdentificacao: true,
+        },
+      },
+      country: {
+        select: {
+          name: true,
+          code: true,
+        },
+      },
+      tipoDesconto: true,
+      saldo: true,
+      estado: true,
     },
   })
 
-  return client as cliente
+  if (!client) throw new BadRequestError('cliente não encontrada')
+  return client
 }

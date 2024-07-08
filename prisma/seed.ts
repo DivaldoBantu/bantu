@@ -1,5 +1,3 @@
-import { prisma } from '@/lib/prisma'
-
 import { seedAccounts } from './seeds/account.seed'
 import { seedClasse } from './seeds/class.seed'
 import { seedClient } from './seeds/client.seed'
@@ -22,8 +20,7 @@ async function seed() {
   await seedFornecedor()
 }
 
-await seed().finally(() => {
+await seed().then(() => {
   console.log('database seeded with success')
-  process.exit(1)
-  prisma.$disconnect()
+  process.exit(0)
 })

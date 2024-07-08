@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import { getLojaModel } from '@/models/loja/get-loja-model'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 import { Prisma } from '@/utils/prisma-throws'
 
 export async function getLojaController(app: FastifyInstance) {
@@ -12,7 +13,7 @@ export async function getLojaController(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/:clientId',
+      '/:lojaId',
       {
         schema: {
           tags: ['Loja'],
@@ -36,7 +37,7 @@ export async function getLojaController(app: FastifyInstance) {
             201: z.object({
               id: z.number(),
               name: z.string(),
-              indentificao: z.string(),
+              identificacao: z.string(),
               address: z.string(),
               provinciaId: z.number(),
               telefone: z.string(),
@@ -50,10 +51,15 @@ export async function getLojaController(app: FastifyInstance) {
         const { lojaId } = request.params
         await request.verifyPermission('read-loja')
 
-        await Prisma.loja.findError(lojaId)
-        const loja = await getLojaModel(lojaId)
-        if (!loja) throw new BadRequestError('Loja ñ encontrada')
-        return reply.status(204).send(loja)
+        try {
+          await Prisma.loja.findError(lojaId)
+          const loja = await getLojaModel(lojaId)
+          if (!loja) return
+          return reply.status(204).send(loja)
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
+        }
       },
     )
 }

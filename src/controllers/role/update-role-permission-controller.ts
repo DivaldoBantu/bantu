@@ -44,7 +44,12 @@ export async function updateRolePermissionController(app: FastifyInstance) {
         const { roleId } = request.params
         const { permissionId, has } = request.body
 
-        await Prisma.role.findError(roleId)
+
+
+
+
+           try {
+               await Prisma.role.findError(roleId)
         await Prisma.permission.findError(permissionId)
 
         if (has) {
@@ -71,8 +76,12 @@ export async function updateRolePermissionController(app: FastifyInstance) {
             },
           })
         }
-
+    console.log('role updated')
         return reply.status(204).send('Permissão atualizada com sucesso!')
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
+        }
       },
     )
 }

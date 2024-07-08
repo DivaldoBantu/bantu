@@ -6,6 +6,7 @@ import { BadRequestError } from '@/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
 import { createUserModel } from '@/models/user/create-user-model'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 
 export async function createControllersUser(app: FastifyInstance) {
   app
@@ -48,22 +49,26 @@ export async function createControllersUser(app: FastifyInstance) {
         if (!userWithSameEmail) {
           throw new BadRequestError('Já existe um usuário com o mesmo e-mail.')
         }
-        const user = await createUserModel({
-          name,
-          email,
-          isSuperAdmin,
-          password,
-        })
-
-        const res = {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          avatar: user.avatar,
-          isSuperAdmin: user.isSuperAdmin,
-          password: user.password,
+        try {
+          const user = await createUserModel({
+            name,
+            email,
+            isSuperAdmin,
+            password,
+          })
+          const res = {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            avatar: user.avatar,
+            isSuperAdmin: user.isSuperAdmin,
+            password: user.password,
+          }
+          return reply.code(201).send(res)
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
         }
-        return reply.code(201).send(res)
       },
     )
 }

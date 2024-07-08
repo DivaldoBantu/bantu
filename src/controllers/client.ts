@@ -9,9 +9,9 @@ import { updateClienteController } from './client/update-cliente-controller'
 
 export async function cliente(app: FastifyInstance) {
   app.register(createClienteWithFornecedorController)
+  app.register(createClienteAndFornecedorController)
   app.register(deleteClienteController)
   app.register(getClientController)
   app.register(listClienteController)
   app.register(updateClienteController)
-  app.register(createClienteAndFornecedorController)
 }

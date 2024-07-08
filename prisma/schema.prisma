@@ -102,14 +102,15 @@ model RolePermission {
 }
 
 model Country {
-  id            Int            @id @default(autoincrement())
-  name          String
+  id            Int            @default(autoincrement())
   code          String         @unique
+  name          String
   provincias    Provincia[]
   organizations Organization[]
   Fornecedor    Fornecedor[]
   Cliente       Cliente[]
 
+  @@id([id, code])
   @@map("countries")
 }
 
@@ -165,11 +166,11 @@ enum Area {
 }
 
 model Provincia {
-  id        Int    @id @default(autoincrement())
-  countryId Int
-  name      String
+  id           Int    @id @default(autoincrement())
+  countrieCode String
+  name         String
 
-  countries     Country        @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  country       Country        @relation(fields: [countrieCode], references: [code], onDelete: Cascade)
   organizations Organization[]
   Loja          Loja[]
 
@@ -182,7 +183,7 @@ model Organization {
   name             String
   type             EmpresaType
   avatar           String?
-  countryId        Int
+  countryCode      String
   provinciaId      Int
   endereco         String?
   cidade           String?
@@ -191,12 +192,12 @@ model Organization {
   email            String?
   nif              String      @unique
   cae              String?
-  numAlvara        String?     @map("num_alvara")
+  alvara           String?     @map("numero_de_alvara")
   regimeIva        RegimeIva   @map("regime_iva")
   indicadorFactura String      @map("indicador_factura")
 
   provincias Provincia @relation(fields: [provinciaId], references: [id])
-  countries  Country   @relation(fields: [countryId], references: [id])
+  country    Country   @relation(fields: [countryCode], references: [code])
 
   @@map("organizations")
 }
@@ -243,19 +244,19 @@ model ImpostTax {
 }
 
 model Fornecedor {
-  id           Int        @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   entidadeId   Int
-  countryId    Int
+  countryCode  String
   telefone     String
   telefone2    String?
   whatsapp     String?
-  address      String?
+  endereco     String?
   email        String?
   subAccountId Int
-  subAcount    SubAccount @relation(fields: [subAccountId], references: [id])
   estado       Estado
 
-  country           Country             @relation(fields: [countryId], references: [id])
+  subAcount         SubAccount          @relation(fields: [subAccountId], references: [id])
+  country           Country             @relation(fields: [countryCode], references: [code])
   entidadeTerceiros EntidadeTerceiros   @relation(fields: [entidadeId], references: [id])
   artigoBarCode     ArtigoBarCode[]
   ArtigoCodigoBarra ArtigoCodigoBarra[]
@@ -298,8 +299,8 @@ enum Estado {
 
 model Cliente {
   id                  Int          @id @default(autoincrement())
-  entidadeId          Int
-  countryId           Int
+  entidadeId          Int          @unique
+  countryCode         String
   telefone            String
   telefone2           String?
   whatsapp            String?
@@ -315,9 +316,9 @@ model Cliente {
   limiteCredito       Float
   estado              Estado
 
-  country    Country?           @relation(fields: [countryId], references: [id])
-  subAccount SubAccount         @relation(fields: [subAccountId], references: [id])
-  entidade   EntidadeTerceiros? @relation(fields: [entidadeId], references: [id])
+  country    Country           @relation(fields: [countryCode], references: [code])
+  subAccount SubAccount        @relation(fields: [subAccountId], references: [id])
+  entidade   EntidadeTerceiros @relation(fields: [entidadeId], references: [id])
 }
 
 enum DescontoType {
@@ -349,16 +350,16 @@ model Armazem {
 }
 
 model Loja {
-  id           Int       @id @default(autoincrement())
-  name         String
-  indentificao String
-  address      String
-  provinciaId  Int
-  email        String
-  telefone     String
-  telefone2    String?
-  provincia    Provincia @relation(fields: [provinciaId], references: [id])
-  Armazem      Armazem[]
+  id            Int       @id @default(autoincrement())
+  name          String
+  identificacao String
+  address       String
+  provinciaId   Int
+  email         String
+  telefone      String
+  telefone2     String?
+  provincia     Provincia @relation(fields: [provinciaId], references: [id])
+  Armazem       Armazem[]
 }
 
 enum ClasseEstado {

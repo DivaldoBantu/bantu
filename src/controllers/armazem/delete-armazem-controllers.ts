@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import { deleteArmazemModel } from '@/models/armazem/delete-armazem-model'
 import { auth } from '@/routes/middlewares/auth'
-import { getErrorMessage } from '@/utils/get-error-message'
+import { getError } from '@/utils/error-utils'
 import { Prisma } from '@/utils/prisma-throws'
 
 export async function deleteArmazemController(app: FastifyInstance) {
@@ -42,14 +42,15 @@ export async function deleteArmazemController(app: FastifyInstance) {
         const { armazemId } = request.params
         await request.verifyPermission('delete-armazem')
 
-        await Prisma.armazem.findError(armazemId)
         try {
+          await Prisma.armazem.findError(armazemId)
           await deleteArmazemModel(armazemId)
           return reply
             .status(201)
             .send({ message: 'Armazem apagado com sucesso' })
         } catch (error) {
-          throw new BadRequestError(getErrorMessage(error))
+          const { message } = getError(error)
+          throw new BadRequestError(message)
         }
       },
     )

@@ -25,14 +25,14 @@ export interface cliente {
   id?: number
   countryId: number
   telefone: string
-  telefone2?: string
-  whatsapp?: string
-  endereco?: string
-  email?: string
+  telefone2?: string | null
+  whatsapp?: string | null
+  endereco?: string | null
+  email?: string | null
   subAccountId: number
   tipoDesconto: 'COMERCIAL' | 'FINANCEIRO' | 'DIVERSO' | 'NENHUM'
-  valorDesconto?: number
-  percentagemDesconto?: number
+  valorDesconto?: number | null
+  percentagemDesconto?: number | null
   efectuaRetencao: boolean
   saldo: number
   limiteSaldo: number
@@ -44,10 +44,10 @@ export interface fornecedor {
   id?: number
   countryId: number
   telefone: string
-  telefone2?: string
-  whatsapp?: string
-  address?: string
-  email?: string
+  telefone2?: string | null
+  whatsapp?: string | null
+  endereco?: string | null
+  email?: string | null
   subAccountId: number
   estado: 'ACTIVO' | 'REMOVIDO'
 }
@@ -55,7 +55,7 @@ export interface fornecedor {
 export interface Loja {
   id?: number
   name: string
-  indentificao: string
+  identificacao: string
   address: string
   provinciaId: number
   telefone: string

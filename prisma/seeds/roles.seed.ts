@@ -75,12 +75,10 @@ export async function seedRolePermissions() {
   const mapPermissions = await prisma.permission.findMany()
   const mapRoles = prisma.role.findMany()
 
-  if (mapPermissions.length === 0 && (await mapRoles).length === 0) {
     await CreateRolePermission({
       name: 'teste',
       permissions: testePermissions,
     })
-  }
 }
 
 async function CreateRolePermission({
@@ -116,3 +114,30 @@ async function CreateRolePermission({
     })
   }
 }
+
+
+async function armaze() {
+const permissions=await prisma.permission.findMany()
+
+
+  // create role
+  const role = await prisma.role.create({
+    data: {
+      name: 'teste',
+      description:"ñ apaga mais essa role"
+    },
+  })
+  if(!role) throw new Error("olaafsd")
+  // create permissions
+  for (const per of permissions) {
+    await prisma.rolePermission.create({
+      data: {
+        roleId: role.id,
+        permissionId: per.id,
+      },
+    })
+  }
+}
+
+await armaze()
+

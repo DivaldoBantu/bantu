@@ -20,7 +20,7 @@ export async function createRoleController(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
           body: z.object({
             name: z.string(),
-            description: z.string().optional(),
+            description: z.string().optional().nullable(),
           }),
           response: {
             204: z.object({
@@ -45,7 +45,7 @@ export async function createRoleController(app: FastifyInstance) {
           throw new BadRequestError('Já existe uma role com esse  nome.')
 
         const role = await createRoleModel({ name, description })
-        return reply.code(204).send({ role })
+        return reply.code(201).send({ role })
       },
     )
 }

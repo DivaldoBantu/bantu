@@ -17,7 +17,7 @@ export async function getRoleController(app: FastifyInstance) {
         schema: {
           tags: ['Roles'],
           summary: 'Pesquisar role pelo id',
-          //security: [{ bearerAuth: [] }],
+          security: [{ bearerAuth: [] }],
           params: z.object({
             roleId: z.string().transform((val, ctx) => {
               const parsed = parseInt(val)
@@ -46,7 +46,7 @@ export async function getRoleController(app: FastifyInstance) {
       },
       async (request, reply) => {
         const { roleId } = request.params
-        //await request.verifyPermission('read-role')
+        // await request.verifyPermission('read-role')
         await Prisma.role.findError(roleId)
         const role = await getRoleModel(roleId)
         const permissions = await getRolePermissionsModel(roleId)

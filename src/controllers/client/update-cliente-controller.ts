@@ -17,7 +17,7 @@ export async function updateClienteController(app: FastifyInstance) {
       '/clientId',
       {
         schema: {
-          tags: ['Loja'],
+          tags: ['Cliente'],
           summary: 'Actualizar loja',
           security: [{ bearerAuth: [] }],
           params: z.object({

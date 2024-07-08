@@ -14,7 +14,11 @@ import { requestPasswordRecover } from '@/controllers/auth/request-password-reco
 import { reset } from '@/controllers/auth/reset-password'
 import { auth } from '@/controllers/auth/sign-in'
 import { category } from '@/controllers/category'
+import { cliente } from '@/controllers/client'
+import { fornecedor } from '@/controllers/fornecedor'
+import { helpers } from '@/controllers/helpers'
 import { loja } from '@/controllers/loja'
+import { organization } from '@/controllers/organization'
 import { permission } from '@/controllers/permission'
 import { role } from '@/controllers/role'
 import { subcategory } from '@/controllers/subcategory '
@@ -68,8 +72,13 @@ app.register(requestPasswordRecover)
 // user routes
 app.register(getProfile)
 app.register(users, {
-  prefix: '/users',
+  prefix: '/user',
 })
+
+app.register(organization, {
+  prefix: '/organization',
+})
+
 app.register(unity, {
   prefix: '/unity',
 })
@@ -95,6 +104,18 @@ app.register(role, {
 
 app.register(permission, {
   prefix: '/permission',
+})
+
+app.register(cliente, {
+  prefix: '/cliente',
+})
+
+app.register(fornecedor, {
+  prefix: '/fornecedor',
+})
+
+app.register(helpers, {
+  prefix: '/helpers',
 })
 
 /*
