@@ -14,14 +14,13 @@ export async function createSubCategoryController(app: FastifyInstance) {
       '/create',
       {
         schema: {
-        tags: ['sub-categoria'],
+          tags: ['sub-categoria'],
           body: z.object({
-            id: z.number(),
+            categoryId: z.number(),
             name: z.string(),
           }),
           response: {
             200: z.object({
-              id: z.number(),
               name: z.string(),
             }),
           },
@@ -30,13 +29,13 @@ export async function createSubCategoryController(app: FastifyInstance) {
       async (request, reply) => {
         try {
           await request.verifyPermission('create-subcategory')
-          const { name, id } = request.body
+          const { name, categoryId } = request.body
           const findByName = await getByNameSubCategoryModel(name)
           if (findByName) {
             throw new Error('SubCategory exists.')
           }
-          const subcategory = await createSubCategoryModel(name, id)
-          return reply.status(200).send(subcategory)
+          const subcategory = await createSubCategoryModel(name, categoryId)
+          return reply.status(200).send({ name: subcategory.name })
         } catch (error: any) {
           return reply.status(400).send(error.message)
         }

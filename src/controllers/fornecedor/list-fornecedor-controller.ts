@@ -1,3 +1,4 @@
+import { TipoIdentificacao } from '@prisma/client'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -19,7 +20,25 @@ export async function listFornecedoresController(app: FastifyInstance) {
           summary: 'listas fornecedores',
           security: [{ bearerAuth: [] }],
           response: {
-            200: z.any(),
+            200: z.object({
+              fornecedores: z
+                .object({
+                  id: z.number(),
+                  entidadeId: z.number(),
+                  email: z.string().nullable(),
+                  estado: z.enum(['ACTIVO', 'REMOVIDO']),
+                  country: z.object({
+                    code: z.string(),
+                    name: z.string(),
+                  }),
+                  entidade: z.object({
+                    name: z.string(),
+                    identificacao: z.string(),
+                    tipodeIdentificacao: z.nativeEnum(TipoIdentificacao),
+                  }),
+                })
+                .array(),
+            }),
           },
         },
       },

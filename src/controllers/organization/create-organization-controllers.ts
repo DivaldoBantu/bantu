@@ -44,7 +44,7 @@ export async function createOrganizationController(app: FastifyInstance) {
         await request.verifyPermission('create-empresa')
         const { countryId, provinciaId, ...data } = request.body
 
-        const country = await prisma.country.findUnique({
+        const country = await prisma.country.findFirst({
           where: {
             id: countryId,
             provincias: {
@@ -55,6 +55,7 @@ export async function createOrganizationController(app: FastifyInstance) {
           },
           select: {
             id: true,
+            code: true,
             provincias: {
               select: {
                 id: true,
@@ -68,7 +69,7 @@ export async function createOrganizationController(app: FastifyInstance) {
 
         const organization = await prisma.organization.create({
           data: {
-            countryId: country.id,
+            countryCode: country.code,
             provinciaId: country.provincias[0].id,
             ...data,
           },

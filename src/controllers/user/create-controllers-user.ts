@@ -46,7 +46,7 @@ export async function createControllersUser(app: FastifyInstance) {
             email,
           },
         })
-        if (!userWithSameEmail) {
+        if (userWithSameEmail) {
           throw new BadRequestError('Já existe um usuário com o mesmo e-mail.')
         }
         try {

@@ -230,18 +230,21 @@ const account = [
 ]
 
 export async function seedAccounts() {
-  const MapAccount = await prisma.account.findMany()
-  if (MapAccount.length === 0) {
-    for (const itemCount of account) {
-      await prisma.account.create({
-        data: {
-          name: itemCount.name,
-          numero: itemCount.numero,
-          estado: 'INATIVO',
-          classeId: parseInt(itemCount.classeId),
-        },
-      })
-    }
+  const count = await prisma.account.count()
+  if (count > 0) {
+    console.log('Database is not empty. Aborting seed operation.')
+    return // Aborta a operação se o banco de dados não estiver vazio
+  }
+
+  for (const itemCount of account) {
+    await prisma.account.create({
+      data: {
+        name: itemCount.name,
+        numero: itemCount.numero,
+        estado: 'INATIVO',
+        classeId: parseInt(itemCount.classeId),
+      },
+    })
   }
   console.log('Accounts exists.')
 }

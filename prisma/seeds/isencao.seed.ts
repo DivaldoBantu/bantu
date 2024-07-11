@@ -11,7 +11,6 @@ const isencao = [
     regimeTransitorio: true,
     regimeNaoSujeicao: false,
     Desabilitar: false,
-    id_Usuario: 1,
   },
   {
     id_Isencao: 2,
@@ -23,7 +22,6 @@ const isencao = [
     regimeTransitorio: false,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-    id_Usuario: 1,
   },
   {
     id_Isencao: 3,
@@ -35,11 +33,6 @@ const isencao = [
     regimeTransitorio: false,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:17:34.670',
-    DataModificacao: '2022-03-24 20:08:38.663',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 4,
@@ -53,12 +46,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:09:16.720',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:19:38.767',
-    DataModificacao: '2022-03-20 23:09:16.720',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 5,
@@ -72,12 +59,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:09:25.897',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:20:06.453',
-    DataModificacao: '2022-03-20 23:09:25.897',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 6,
@@ -91,12 +72,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:11:10.490',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:20:52.147',
-    DataModificacao: '2022-03-20 23:11:10.490',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 7,
@@ -109,12 +84,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:11:21.003',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:21:21.913',
-    DataModificacao: '2022-03-20 23:11:21.003',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 8,
@@ -128,12 +97,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:11:32.273',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:21:46.230',
-    DataModificacao: '2022-03-20 23:11:32.273',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 9,
@@ -147,12 +110,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:11:43.830',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:22:12.593',
-    DataModificacao: '2022-03-20 23:11:43.830',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 10,
@@ -166,12 +123,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:15:56.140',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:22:35.030',
-    DataModificacao: '2022-03-20 23:15:56.140',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 11,
@@ -184,12 +135,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:16:03.900',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:22:51.903',
-    DataModificacao: '2022-03-20 23:16:03.900',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 12,
@@ -203,12 +148,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:16:29.500',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:23:17.960',
-    DataModificacao: '2022-03-20 23:16:29.500',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 13,
@@ -222,12 +161,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:16:36.590',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:23:49.743',
-    DataModificacao: '2022-03-20 23:16:36.590',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 14,
@@ -241,12 +174,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:16:45.040',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:24:26.793',
-    DataModificacao: '2022-03-20 23:16:45.040',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 15,
@@ -260,12 +187,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:16:53.683',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:24:49.407',
-    DataModificacao: '2022-03-20 23:16:53.683',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 16,
@@ -278,12 +199,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:04.560',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:25:09.387',
-    DataModificacao: '2022-03-20 23:17:04.560',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 17,
@@ -296,12 +211,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:11.200',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:25:25.760',
-    DataModificacao: '2022-03-20 23:17:11.200',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 18,
@@ -314,12 +223,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:18.497',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:25:42.220',
-    DataModificacao: '2022-03-20 23:17:18.497',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 19,
@@ -332,12 +235,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:25.643',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:26:03.763',
-    DataModificacao: '2022-03-20 23:17:25.643',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 20,
@@ -350,12 +247,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:31.790',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:26:32.950',
-    DataModificacao: '2022-03-20 23:17:31.790',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 21,
@@ -368,12 +259,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:40.440',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:26:57.377',
-    DataModificacao: '2022-03-20 23:17:40.440',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 22,
@@ -386,12 +271,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:48.340',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:27:14.123',
-    DataModificacao: '2022-03-20 23:17:48.340',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 23,
@@ -404,12 +283,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:17:56.900',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:27:34.520',
-    DataModificacao: '2022-03-20 23:17:56.900',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 24,
@@ -422,12 +295,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:18:03.733',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:27:51.123',
-    DataModificacao: '2022-03-20 23:18:03.733',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 25,
@@ -440,12 +307,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:18:10.717',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 21:30:43.320',
-    DataModificacao: '2022-03-20 23:18:10.717',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 26,
@@ -458,12 +319,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:18:18.267',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 22:58:11.370',
-    DataModificacao: '2022-03-20 23:18:18.267',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 27,
@@ -476,12 +331,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:18:25.377',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 22:59:02.927',
-    DataModificacao: '2022-03-20 23:18:25.377',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 28,
@@ -494,12 +343,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:18:33.020',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 22:59:26.570',
-    DataModificacao: '2022-03-20 23:18:33.020',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 29,
@@ -512,12 +355,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:18:39.980',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 22:59:51.390',
-    DataModificacao: '2022-03-20 23:18:39.980',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 30,
@@ -530,12 +367,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:18:47.550',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:00:09.353',
-    DataModificacao: '2022-03-20 23:18:47.550',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 31,
@@ -548,12 +379,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:19:01.167',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:00:38.273',
-    DataModificacao: '2022-03-20 23:19:01.167',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 32,
@@ -566,12 +391,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:19:13.210',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:00:55.100',
-    DataModificacao: '2022-03-20 23:19:13.210',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 33,
@@ -584,12 +403,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:19:23.683',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:01:10.160',
-    DataModificacao: '2022-03-20 23:19:23.683',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 34,
@@ -602,12 +415,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:19:30.820',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:01:25.007',
-    DataModificacao: '2022-03-20 23:19:30.820',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 35,
@@ -620,12 +427,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:19:38.267',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:01:43.180',
-    DataModificacao: '2022-03-20 23:19:38.267',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 36,
@@ -638,12 +439,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:19:53.967',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:02:02.383',
-    DataModificacao: '2022-03-20 23:19:53.967',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 37,
@@ -656,12 +451,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:20:01.513',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:02:18.097',
-    DataModificacao: '2022-03-20 23:20:01.513',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 38,
@@ -674,12 +463,6 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:20:08.427',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:02:52.663',
-    DataModificacao: '2022-03-20 23:20:08.427',
-    id_Usuario: 1,
   },
   {
     id_Isencao: 39,
@@ -692,32 +475,27 @@ const isencao = [
     regimeTransitorio: true,
     RegimeNaoSujeicao: true,
     Desabilitar: false,
-
-    ActualizacaoData: '2022-03-20 23:20:15.163',
-    id_UsuarioActualizacao: 1,
-    DataRegisto: '2020-01-02 23:03:09.023',
-    DataModificacao: '2022-03-20 23:20:15.163',
-    id_Usuario: 1,
   },
 ]
 export async function seedIsencao() {
-  const MapIsencao = await prisma.isencao.findMany()
-
-  if (MapIsencao.length === 0) {
-    for (const itemIsencao of isencao) {
-      await prisma.isencao.create({
-        data: {
-          codIsencao: itemIsencao.CodIsencao,
-          description: itemIsencao.description,
-          mencaoConstarDoc: itemIsencao.mencaoConstarDoc,
-          normaAplicavel: itemIsencao.normaAplicavel,
-          regimeGeral: itemIsencao.RegimeGeral ?? false,
-          regimeNaoSujeicao: itemIsencao.RegimeNaoSujeicao ?? false,
-          regimeTransitorio: itemIsencao.regimeTransitorio,
-          status: itemIsencao.Desabilitar,
-        },
-      })
-      console.log('Done Isencao.')
-    }
+  const MapIsencao = await prisma.isencao.count()
+  if (MapIsencao > 0) {
+    console.log('Database is not empty')
+    return
+  }
+  for (const itemIsencao of isencao) {
+    await prisma.isencao.create({
+      data: {
+        codIsencao: itemIsencao.CodIsencao,
+        description: itemIsencao.description,
+        mencaoConstarDoc: itemIsencao.mencaoConstarDoc,
+        normaAplicavel: itemIsencao.normaAplicavel,
+        regimeGeral: itemIsencao.RegimeGeral ?? false,
+        regimeNaoSujeicao: itemIsencao.RegimeNaoSujeicao ?? false,
+        regimeTransitorio: itemIsencao.regimeTransitorio,
+        status: itemIsencao.Desabilitar,
+      },
+    })
+    console.log('Done Isencao.')
   }
 }

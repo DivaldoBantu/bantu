@@ -2294,17 +2294,19 @@ const subContas = [
 ]
 
 export async function seedSubContas() {
-  const mapSubAccount = await prisma.subAccount.findMany()
-  if (mapSubAccount.length === 0) {
-    for (const itemSubcontas of subContas) {
-      await prisma.subAccount.create({
-        data: {
-          numero: itemSubcontas.numero,
-          description: itemSubcontas.description,
-          estado: 'inactive',
-          accountId: itemSubcontas.N_Conta,
-        },
-      })
-    }
+  const count = await prisma.subAccount.count()
+  if (count > 0) {
+    console.log('SubContas já foram criadas anteriormente')
+    return
+  }
+  for (const itemSubcontas of subContas) {
+    await prisma.subAccount.create({
+      data: {
+        numero: itemSubcontas.numero,
+        description: itemSubcontas.description,
+        estado: 'inactive',
+        accountId: itemSubcontas.N_Conta,
+      },
+    })
   }
 }

@@ -83,19 +83,15 @@ app.register(unity, {
   prefix: '/unity',
 })
 
-app.register(category, {
-  prefix: '/category',
-})
-app.register(subcategory, {
-  prefix: '/subcategory',
-})
+app.register(category, { prefix: '/category' })
+app.register(subcategory, { prefix: '/subcategory' })
 
 app.register(loja, {
-  prefix: 'loja',
+  prefix: '/loja',
 })
 
 app.register(armazem, {
-  prefix: 'armazem',
+  prefix: '/armazem',
 })
 
 app.register(role, {

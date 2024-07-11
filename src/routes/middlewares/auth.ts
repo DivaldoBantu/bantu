@@ -168,14 +168,14 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       }
     }
     request.verifyPermission = async (permission: string) => {
-      const { permissions } = await request.getUserPermission()
+      const { permissions, user } = await request.getUserPermission()
 
       const hasRequiredPermission = permissions.some(
         (per) => per.slug === permission,
       )
-
-      if (!hasRequiredPermission)
+      if (!user.isSuperAdmin && !hasRequiredPermission) {
         throw new UnauthorizedError('Permissão Negada')
+      }
     }
   })
 })

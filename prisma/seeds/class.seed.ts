@@ -15,18 +15,18 @@ const Class = [
 ]
 
 export async function seedClasse() {
-  const mapClass = await prisma.classe.findMany()
-  if (mapClass.length === 0) {
-    for (const itemClass of Class) {
-      await prisma.classe.create({
-        data: {
-          name: itemClass.nome_classe,
-          numero: itemClass.numero_classe,
-          estado: 'INATIVO',
-        },
-      })
-    }
-  } else {
-    console.log('ja existes dados classe.')
+  const count = await prisma.classe.count()
+  if (count > 0) {
+    console.log('Já existem classes no banco de dados.')
+    return // Aborta a operação se o banco de dados não estiver vazio
+  }
+  for (const itemClass of Class) {
+    await prisma.classe.create({
+      data: {
+        name: itemClass.nome_classe,
+        numero: itemClass.numero_classe,
+        estado: 'INATIVO',
+      },
+    })
   }
 }

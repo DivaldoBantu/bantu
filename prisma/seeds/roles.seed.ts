@@ -72,13 +72,17 @@ const testePermissions = [
 ]
 
 export async function seedRolePermissions() {
-  const mapPermissions = await prisma.permission.findMany()
-  const mapRoles = prisma.role.findMany()
+  const permis = await prisma.permission.count()
 
-    await CreateRolePermission({
-      name: 'teste',
-      permissions: testePermissions,
-    })
+  if (permis > 0) {
+    console.log('Permissions already seeded')
+    return
+  }
+
+  await CreateRolePermission({
+    name: 'teste',
+    permissions: testePermissions,
+  })
 }
 
 async function CreateRolePermission({
@@ -97,15 +101,7 @@ async function CreateRolePermission({
 
   // create permissions
   for (const per of permissions) {
-    const { id } = await prisma.permission.create({
-      data: {
-        slug: createSlug(per),
-        description: per,
-      },
-      select: {
-        id: true,
-      },
-    })
+    const { id } = await createPermission(per)
     await prisma.rolePermission.create({
       data: {
         roleId: role.id,
@@ -115,29 +111,14 @@ async function CreateRolePermission({
   }
 }
 
-
-async function armaze() {
-const permissions=await prisma.permission.findMany()
-
-
-  // create role
-  const role = await prisma.role.create({
+async function createPermission(per: string) {
+  return await prisma.permission.create({
     data: {
-      name: 'teste',
-      description:"ñ apaga mais essa role"
+      slug: createSlug(per),
+      description: per,
+    },
+    select: {
+      id: true,
     },
   })
-  if(!role) throw new Error("olaafsd")
-  // create permissions
-  for (const per of permissions) {
-    await prisma.rolePermission.create({
-      data: {
-        roleId: role.id,
-        permissionId: per.id,
-      },
-    })
-  }
 }
-
-await armaze()
-

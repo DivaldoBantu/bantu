@@ -35,6 +35,13 @@ console.log('Current directory:', process.cwd())
 console.log('File path:', countriesFilePath)
 
 export async function SeedCountries() {
+  // Verifica se já existem países no banco de dados
+  const count = await prisma.country.count()
+  if (count > 0) {
+    console.log('Database is not empty. Aborting seed operation.')
+    return // Aborta a operação se o banco de dados não estiver vazio
+  }
+
   for (const country of countries) {
     await prisma.country.create({
       data: {

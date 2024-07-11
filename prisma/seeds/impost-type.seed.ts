@@ -40,26 +40,27 @@ const impost = [
 ]
 
 export async function seedImpost() {
-  const mapImpostTax = await prisma.impostTax.findMany()
-  const mapImpostType = await prisma.impostType.findMany()
-
-  if (mapImpostTax.length === 0 && mapImpostType.length === 0) {
-    for (const imp of impost) {
-      await prisma.impostType.create({
-        data: {
-          name: imp.name,
-          tipo: imp.type as TipoAGT,
-          tax: {
-            createMany: {
-              data: imp.tax.map((e) => ({
-                value: e.value,
-                type: e.type,
-                createdAt: new Date(e.createdAt).toISOString(),
-              })),
-            },
+  const mapImpostTax = await prisma.impostTax.count()
+  const mapImpostType = await prisma.impostType.count()
+  if (mapImpostTax > 0 || mapImpostType > 0) {
+    console.log('Database is not empty. Aborting seed operation.')
+    return // Aborta a operação se o banco de dados não estiver vazio
+  }
+  for (const imp of impost) {
+    await prisma.impostType.create({
+      data: {
+        name: imp.name,
+        tipo: imp.type as TipoAGT,
+        tax: {
+          createMany: {
+            data: imp.tax.map((e) => ({
+              value: e.value,
+              type: e.type,
+              createdAt: new Date(e.createdAt).toISOString(),
+            })),
           },
         },
-      })
-    }
+      },
+    })
   }
 }

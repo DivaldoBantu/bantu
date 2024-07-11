@@ -12,6 +12,7 @@ export async function listUserModel({ name, email }: props) {
       avatar: true,
       active: true,
       createdAt: true,
+      isSuperAdmin: true,
       profiles: {
         select: {
           role: {
@@ -39,6 +40,7 @@ export async function listUserModel({ name, email }: props) {
       avatar: e.avatar,
       status: e.active,
       createdAt: e.createdAt,
+      isSuperAdmin: e.isSuperAdmin,
       profiles: e.profiles
         .map((b) => b.role._count.usersProfiles)
         .reduce((acc, e) => e + acc, 0),

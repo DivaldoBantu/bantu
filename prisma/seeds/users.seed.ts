@@ -3,6 +3,16 @@ import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
 
 export async function seedUsers() {
+  const first = await prisma.user.findFirst({
+    where: {
+      email: 'john@acme.com',
+    },
+  })
+  if (first) {
+    console.log('super user already seeded')
+    return
+  }
+
   const roleId = await prisma.role.findFirst({
     where: { name: 'teste' },
     select: {

@@ -30,6 +30,7 @@ export async function listControllersUser(app: FastifyInstance) {
                   name: z.string(),
                   email: z.string(),
                   avatar: z.string().nullable(),
+                  isSuperAdmin: z.boolean(),
                   status: z.boolean(),
                   createdAt: z.date(),
                   profiles: z.number(),
