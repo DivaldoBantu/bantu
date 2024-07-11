@@ -1,9 +1,5 @@
 {
   "name": "@backend-comercial",
-  "workspaces": [
-    "packages/*",
-    "config/*"
-  ],
   "scripts": {
     "dev": "tsx  --trace-warnings src/routes/server.ts",
     "build": "tsup src",
@@ -16,15 +12,7 @@
   "prisma": {
     "seed": "bun prisma/seed.ts"
   },
-  "eslintConfig": {
-    "extends": [
-      "@backend-comercial/eslint-config/node"
-    ]
-  },
   "devDependencies": {
-    "@backend-comercial/eslint-config": "workspace:*",
-    "@backend-comercial/prettier": "workspace:*",
-    "@backend-comercial/tsconfig": "workspace:*",
     "@faker-js/faker": "^8.4.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/bun": "latest",
