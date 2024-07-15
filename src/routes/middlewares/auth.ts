@@ -76,6 +76,24 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       'update armazem',
       'list armazem',
       'read armazem',
+
+      'create funcao',
+      'delete funcao',
+      'update funcao',
+      'list funcao',
+      'read funcao',
+
+      'create banco',
+      'delete banco',
+      'update banco',
+      'list banco',
+      'read banco',
+
+      'create funcionario',
+      'delete funcionario',
+      'update funcionario',
+      'list funcionario',
+      'read funcionario',
     ]
     const permissionsFromDb = await prisma.permission.findMany({
       select: {

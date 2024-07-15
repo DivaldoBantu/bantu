@@ -15,7 +15,7 @@ interface carreiras {
   updatedAt: Date
 }
 
-export async function listCarreiras(app: FastifyInstance) {
+export async function listarSubcarreira(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
@@ -23,8 +23,8 @@ export async function listCarreiras(app: FastifyInstance) {
       's',
       {
         schema: {
-          tags: ['RH', 'Carreira'],
-          summary: 'Listar carreiras',
+          tags: ['RH', 'Subcarreira'],
+          summary: 'Listar subcarreira',
           security: [{ bearerAuth: [] }],
           response: {
             200: z.any(),
@@ -32,11 +32,10 @@ export async function listCarreiras(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('list-carreira')
-        // const { name, email } = request.query
+        await request.verifyPermission('list-subcarreira')
         try {
-          const { data: carreiras } = await api.get<carreiras[]>('/carreira')
-          return reply.code(200).send(carreiras)
+          const { data } = await api.get('/subcarreira')
+          return reply.code(200).send(data)
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)

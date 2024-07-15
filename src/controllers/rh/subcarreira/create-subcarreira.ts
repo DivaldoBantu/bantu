@@ -5,10 +5,9 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
-import type { carreira } from '@/types/global'
 import { getError } from '@/utils/error-utils'
 
-export async function createCarreira(app: FastifyInstance) {
+export async function createSubCarreira(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
@@ -16,16 +15,18 @@ export async function createCarreira(app: FastifyInstance) {
       '',
       {
         schema: {
-          tags: ['RH', 'Carreira'],
-          summary: 'Criar carreira',
+          tags: ['RH', 'Subcarreira'],
+          summary: 'Criar subcarreira',
           security: [{ bearerAuth: [] }],
           body: z.object({
-            nome_carreira: z
+            nome_SubCarreira: z
               .string()
-              .min(3, { message: 'O nome precisa ter no mínimo 3 caracteres' }),
-            regime: z.enum(['geral', 'especial'], {
-              message: 'O Regime somente deve ser geral ou especial!',
-            }),
+              .min(3, { message: "O nome precisa ter no mínimo 3 caracteres" })
+              .nonempty({ message: "O nome não pode ser enviado vazio!" }),
+            Id_carreira: z
+              .number()
+              .int()
+              .positive({ message: "O número precisa ser positivo" }),
           }),
           response: {
             200: z.any(),
@@ -33,14 +34,13 @@ export async function createCarreira(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('create-carreira')
+        await request.verifyPermission('create-subcarreira')
         const body = request.body
 
         try {
-          const { data } = await api.post<carreira>('/carreira', body)
+          const { data } = await api.post('/subcarreira', body)
           return reply.code(201).send(data)
         } catch (error) {
-          console.log(error)
           const { message } = getError(error)
           throw new BadRequestError(message)
         }

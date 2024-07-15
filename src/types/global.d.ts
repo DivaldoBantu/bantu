@@ -78,3 +78,9 @@ export interface Role {
   name: string
   description?: string
 }
+export interface Funcao {
+  id: number
+  nome_funcao: string
+  createdAt: Date
+  updatedAt: Date
+}

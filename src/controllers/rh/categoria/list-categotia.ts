@@ -7,15 +7,8 @@ import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
 import { getError } from '@/utils/error-utils'
 
-interface carreiras {
-  id: number
-  nome_carreira: string
-  regime: string
-  createdAt: Date
-  updatedAt: Date
-}
 
-export async function listCarreiras(app: FastifyInstance) {
+export async function listCategorias(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
@@ -23,8 +16,8 @@ export async function listCarreiras(app: FastifyInstance) {
       's',
       {
         schema: {
-          tags: ['RH', 'Carreira'],
-          summary: 'Listar carreiras',
+          tags: ['RH', 'RH-Categoria'],
+          summary: 'Listar categorias e suas sub-categorias',
           security: [{ bearerAuth: [] }],
           response: {
             200: z.any(),
@@ -32,11 +25,11 @@ export async function listCarreiras(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('list-carreira')
+        await request.verifyPermission('list-categoria')
         // const { name, email } = request.query
         try {
-          const { data: carreiras } = await api.get<carreiras[]>('/carreira')
-          return reply.code(200).send(carreiras)
+          const { data } = await api.get('/categoria')
+          return reply.code(200).send(data)
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)

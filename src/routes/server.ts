@@ -13,9 +13,15 @@ import { armazem } from '@/controllers/armazem'
 import { requestPasswordRecover } from '@/controllers/auth/request-password-recover'
 import { reset } from '@/controllers/auth/reset-password'
 import { auth } from '@/controllers/auth/sign-in'
+import { banco } from '@/controllers/banco'
+import { carreira } from '@/controllers/carreira'
 import { category } from '@/controllers/category'
 import { cliente } from '@/controllers/client'
 import { fornecedor } from '@/controllers/fornecedor'
+import { funcao } from '@/controllers/função'
+import { funcionario } from '@/controllers/funcionario'
+import { subCarreira } from '@/controllers/subcarreira'
+import { categoria } from '@/controllers/categoria'
 import { helpers } from '@/controllers/helpers'
 import { loja } from '@/controllers/loja'
 import { organization } from '@/controllers/organization'
@@ -113,6 +119,33 @@ app.register(fornecedor, {
 app.register(helpers, {
   prefix: '/helpers',
 })
+
+// RH routes
+
+app.register(funcao, {
+  prefix: '/funcao',
+})
+
+app.register(carreira, {
+  prefix: '/carreira',
+})
+
+app.register(banco, {
+  prefix: '/banco',
+})
+
+app.register(funcionario, {
+  prefix: '/funcionario',
+})
+app.register(categoria, {
+  prefix: '/categoria',
+})
+
+app.register(subCarreira, {
+  prefix: '/subcarreira',
+})
+
+
 
 /*
 await seedImpost()

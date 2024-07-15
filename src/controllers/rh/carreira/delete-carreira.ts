@@ -2,22 +2,24 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { BadRequestError } from '@/_errors/bad-request-error'
 import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 
 export async function deleteCarreira(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .delete(
-      '/:carreiraId',
+      '/:id',
       {
         schema: {
-          tags: ['RH'],
+          tags: ['RH', 'Carreira'],
           summary: 'Deletar carreira pelo id',
           security: [{ bearerAuth: [] }],
           params: z.object({
-            carreiraId: z.string().transform((val, ctx) => {
+            id: z.string().transform((val, ctx) => {
               const parsed = parseInt(val)
               if (isNaN(parsed)) {
                 ctx.addIssue({
@@ -36,13 +38,14 @@ export async function deleteCarreira(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        const { carreiraId } = request.params
-        await request.verifyPermission('read-carreira')
+        const { id } = request.params
+        await request.verifyPermission('delete-carreira')
         try {
-          await api.delete(`/carreira/${carreiraId}`)
+          await api.delete(`/carreira/${id}`)
           return reply.code(200).send('carreira deletada com sucesso')
         } catch (error) {
-          console.log(error)
+          const { message } = getError(error)
+          throw new BadRequestError(message)
         }
       },
     )

@@ -73,12 +73,7 @@ const testePermissions = [
 
 export async function seedRolePermissions() {
   const permis = await prisma.permission.count()
-
-  if (permis > 0) {
-    console.log('Permissions already seeded')
-    return
-  }
-
+  
   await CreateRolePermission({
     name: 'teste',
     permissions: testePermissions,
