@@ -10,91 +10,76 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
   app.addHook('preHandler', async (request) => {
     const permissions = [
       'list permissions',
-
       'create role',
       'delete role',
       'update role',
       'list role',
       'read role',
-
       'create empresa',
       'delete empresa',
       'update empresa',
       'list empresa',
       'read empresa',
-
       'create user',
       'delete user',
       'update user',
       'list user',
       'read user',
-
       'create fornecedor',
       'delete fornecedor',
       'update fornecedor',
       'list fornecedor',
       'read fornecedor',
-
       'create carreira',
       'delete carreira',
       'read carreira',
       'list carreira',
       'update carreira',
-
       'create cliente',
       'delete cliente',
       'update cliente',
       'list cliente',
       'read cliente',
-
       'create unidade',
       'delete unidade',
       'update unidade',
       'list unidade',
       'read unidade',
-
       'create category',
       'delete category',
       'update category',
       'list category',
       'read category',
-
       'create categoria',
       'delete categoria',
       'update categoria',
       'list categoria',
       'read categoria',
-
       'create subcategory',
       'delete subcategory',
       'update subcategory',
       'list subcategory',
       'read subcategory',
-
       'create loja',
       'delete loja',
       'update loja',
       'list loja',
       'read loja',
-
       'create armazem',
       'delete armazem',
       'update armazem',
       'list armazem',
       'read armazem',
-
       'create funcao',
       'delete funcao',
       'update funcao',
       'list funcao',
       'read funcao',
-
       'create banco',
       'delete banco',
       'update banco',
       'list banco',
       'read banco',
-
       'create funcionario',
       'delete funcionario',
       'update funcionario',
@@ -108,18 +93,18 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       },
     })
 
-    const existingSlugs = permissionsFromDb.map(permission => permission.slug)
-    const newPermissions = permissions.filter(permission => !existingSlugs.includes(permission))
+    const existingSlugs = new Set(permissionsFromDb.map(permission => permission.slug))
+    const newPermissions = permissions.filter(permission => !existingSlugs.has(createSlug(permission)))
 
     if (newPermissions.length > 0) {
-      for (const permission of newPermissions) {
-        await prisma.permission.create({
+      await prisma.$transaction(newPermissions.map(permission => 
+        prisma.permission.create({
           data: {
             slug: createSlug(permission),
             description: permission,
           },
         })
-      }
+      ))
     }
 
     request.getCurrentUserId = async () => {
