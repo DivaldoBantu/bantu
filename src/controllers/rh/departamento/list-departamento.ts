@@ -7,33 +7,28 @@ import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
 import { getError } from '@/utils/error-utils'
 
-export async function createSubCarreira(app: FastifyInstance) {
+
+export async function listDepartamento(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .post(
-      '',
+    .get(
+      's',
       {
         schema: {
-          tags: ['RH', 'Subcarreira'],
-          summary: 'Criar subcarreira',
+          tags: ['RH', 'Departamento'],
+          summary: 'Listar departamento',
           security: [{ bearerAuth: [] }],
-          body: z.object({
-            nome_SubCarreira: z.string(),
-            Id_carreira: z.number(),
-          }),
           response: {
             200: z.any(),
           },
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('create-subcarreira')
-        const body = request.body
-
+        await request.verifyPermission('list-departamento')
         try {
-          const { data } = await api.post('/subcarreira', body)
-          return reply.code(201).send(data)
+          const { data } = await api.get('/departamento')
+          return reply.code(200).send(data)
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)

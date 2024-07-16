@@ -5,26 +5,31 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
-import type { carreira } from '@/types/global'
 import { getError } from '@/utils/error-utils'
 
-export async function createCarreira(app: FastifyInstance) {
+export async function getCompetencia(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .post(
-      '',
+    .get(
+      '/:id',
       {
         schema: {
-          tags: ['RH', 'Carreira'],
-          summary: 'Criar carreira',
+          tags: ['RH', 'Competencia'],
+          summary: 'Buscar competencia pelo id',
           security: [{ bearerAuth: [] }],
-          body: z.object({
-            nome_carreira: z
-              .string()
-              .min(3, { message: 'O nome precisa ter no mínimo 3 caracteres' }),
-            regime: z.enum(['geral', 'especial'], {
-              message: 'O Regime somente deve ser geral ou especial!',
+          params: z.object({
+            id: z.string().transform((val, ctx) => {
+              const parsed = parseInt(val)
+              if (isNaN(parsed)) {
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: 'Not a number',
+                })
+
+                return z.NEVER
+              }
+              return parsed
             }),
           }),
           response: {
@@ -33,14 +38,12 @@ export async function createCarreira(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('create-carreira')
-        const body = request.body
-
+        const { id } = request.params
+        await request.verifyPermission('read-competencia')
         try {
-          const { data } = await api.post<carreira>('/carreira', body)
-          return reply.code(201).send(data)
+          const { data } = await api.get(`/competencia/${id}`)
+          return reply.code(200).send(data)
         } catch (error) {
-          console.log(error)
           const { message } = getError(error)
           throw new BadRequestError(message)
         }

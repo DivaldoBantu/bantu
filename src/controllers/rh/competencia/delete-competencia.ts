@@ -5,19 +5,18 @@ import { z } from 'zod'
 import { BadRequestError } from '@/_errors/bad-request-error'
 import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
-import type { carreira } from '@/types/global'
 import { getError } from '@/utils/error-utils'
 
-export async function getCategotia(app: FastifyInstance) {
+export async function deleteCompetencia(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .get(
+    .delete(
       '/:id',
       {
         schema: {
-          tags: ['RH', 'RH-Categoria'],
-          summary: 'Buscar categoria pelo id',
+          tags: ['RH', 'Competencia'],
+          summary: 'Deletar competencia pelo id',
           security: [{ bearerAuth: [] }],
           params: z.object({
             id: z.string().transform((val, ctx) => {
@@ -34,16 +33,16 @@ export async function getCategotia(app: FastifyInstance) {
             }),
           }),
           response: {
-            200: z.any(),
+            204: z.any(),
           },
         },
       },
       async (request, reply) => {
+        await request.verifyPermission('delete-competencia')
         const { id } = request.params
-        await request.verifyPermission('read-categoria')
         try {
-          const { data } = await api.get(`/categoria/${id}`)
-          return reply.code(200).send(data)
+          await api.delete(`/competencia/${id}`)
+          return reply.code(200).send('competencia deletada com sucesso')
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)

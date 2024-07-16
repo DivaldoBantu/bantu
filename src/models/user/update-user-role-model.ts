@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@/utils/prisma-throws'
 interface props {
   userId: number
   role: {
@@ -7,45 +8,30 @@ interface props {
   }
 }
 export async function updateUserModel({ userId, role }: props) {
-  const roleId = await prisma.role.findUnique({
-    where: {
-      id: role.id,
-    },
-  })
+  await Prisma.role.findError(role.id)
 
-  if (!roleId?.id) throw new Error('Role não encontrada')
-
-  const ifAtt = await prisma.userProfile.findFirst({
-    where: {
-      userId,
-      roleId: roleId.id,
-    },
-  })
-
-  if (role.value === true && !ifAtt) {
-    await prisma.userProfile.create({
-      data: {
+  if (role.value === true) {
+    await prisma.userProfile.upsert({
+      where: {
+        roleId_userId: {
+          userId,
+          roleId: role.id,
+        },
+      },
+      update: {}, // Não é necessário fazer nada, a permissão já existe
+      create: {
         userId,
-        roleId: roleId.id,
+        roleId: role.id,
       },
     })
-    return
   } else {
+    // Remove a permissão
     await prisma.userProfile.deleteMany({
       where: {
         userId,
-        roleId: roleId.id,
+        roleId: role.id,
       },
     })
   }
-
-  const ab = await prisma.userProfile.findFirst({
-    where: {
-      userId,
-      roleId: roleId.id,
-    },
-  })
-  const result = !!ab
-
-  return result
+  return 'Role do usuário atualizada com sucesso!'
 }

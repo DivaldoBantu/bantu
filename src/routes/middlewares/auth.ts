@@ -59,6 +59,12 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       'list category',
       'read category',
 
+      'create categoria',
+      'delete categoria',
+      'update categoria',
+      'list categoria',
+      'read categoria',
+
       'create subcategory',
       'delete subcategory',
       'update subcategory',

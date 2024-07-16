@@ -3,21 +3,20 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { BadRequestError } from '@/_errors/bad-request-error'
-import { updateUserModel } from '@/models/user/update-user-role-model'
+import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
 import { getError } from '@/utils/error-utils'
-import { Prisma } from '@/utils/prisma-throws'
 
-export async function updateUserRoles(app: FastifyInstance) {
+export async function getBanco(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .patch(
+    .get(
       '/:id',
       {
         schema: {
-          tags: ['Members'],
-          summary: 'atualizar roles de um usuário',
+          tags: ['RH', 'Banco'],
+          summary: 'Buscar banco pelo id',
           security: [{ bearerAuth: [] }],
           params: z.object({
             id: z.string().transform((val, ctx) => {
@@ -33,26 +32,17 @@ export async function updateUserRoles(app: FastifyInstance) {
               return parsed
             }),
           }),
-          body: z.object({
-            role: z.object({
-              id: z.number(),
-              value: z.boolean(),
-            }),
-          }),
           response: {
-            204: z.any(),
+            200: z.any(),
           },
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('update-user')
         const { id } = request.params
-        const { role } = request.body
-
+        await request.verifyPermission('read-banco')
         try {
-          await Prisma.user.findError(id)
-          const update = await updateUserModel({ userId: id, role })
-          return reply.status(201).send(update)
+          const { data } = await api.get(`/banco/${id}`)
+          return reply.code(200).send(data)
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)

@@ -3,19 +3,20 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { BadRequestError } from '@/_errors/bad-request-error'
-import { prisma } from '@/lib/prisma'
+import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
+import { getError } from '@/utils/error-utils'
 
-export async function findOrganizationController(app: FastifyInstance) {
+export async function listFormacoes(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/',
+      's',
       {
         schema: {
-          tags: ['Organização'],
-          summary: 'Pesquisar organização',
+          tags: ['RH', 'Formações'],
+          summary: 'Listar Formações',
           security: [{ bearerAuth: [] }],
           response: {
             200: z.any(),
@@ -23,14 +24,14 @@ export async function findOrganizationController(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('read-empresa')
-
-        const organization = await prisma.organization.findFirst()
-
-        if (!organization)
-          throw new BadRequestError('Organização não encontrada')
-
-        return reply.code(201).send(organization)
+        await request.verifyPermission('list-formacao')
+        try {
+          const { data } = await api.get('/formacao')
+          return reply.code(200).send(data)
+        } catch (error) {
+          const { message } = getError(error)
+          throw new BadRequestError(message)
+        }
       },
     )
 }

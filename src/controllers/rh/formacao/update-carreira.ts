@@ -3,21 +3,20 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { BadRequestError } from '@/_errors/bad-request-error'
-import { updateUserModel } from '@/models/user/update-user-role-model'
+import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
 import { getError } from '@/utils/error-utils'
-import { Prisma } from '@/utils/prisma-throws'
 
-export async function updateUserRoles(app: FastifyInstance) {
+export async function updateBanco(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .patch(
-      '/:id',
+    .put(
+      ':id',
       {
         schema: {
-          tags: ['Members'],
-          summary: 'atualizar roles de um usuário',
+          tags: ['RH', 'Banco'],
+          summary: 'Atualizar informações de um banco',
           security: [{ bearerAuth: [] }],
           params: z.object({
             id: z.string().transform((val, ctx) => {
@@ -34,25 +33,29 @@ export async function updateUserRoles(app: FastifyInstance) {
             }),
           }),
           body: z.object({
-            role: z.object({
-              id: z.number(),
-              value: z.boolean(),
+            nome_banco: z.string().min(3, {
+              message: 'O nome precisa ter no mínimo 3 caracteres',
+            }),
+            codigo: z.string().min(3, {
+              message: 'O nome precisa ter no mínimo 1 caractere',
+            }),
+            sigla: z.string().min(2, {
+              message: 'A sigla precisa ter no mínimo 2 caracteres',
             }),
           }),
           response: {
-            204: z.any(),
+            200: z.any(),
           },
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('update-user')
+        await request.verifyPermission('update-banco')
+        const body = request.body
         const { id } = request.params
-        const { role } = request.body
 
         try {
-          await Prisma.user.findError(id)
-          const update = await updateUserModel({ userId: id, role })
-          return reply.status(201).send(update)
+          const { data } = await api.put(`/banco/${id}`, body)
+          return reply.code(201).send(data)
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)

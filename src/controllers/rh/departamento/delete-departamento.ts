@@ -3,21 +3,20 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { BadRequestError } from '@/_errors/bad-request-error'
-import { updateUserModel } from '@/models/user/update-user-role-model'
+import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
 import { getError } from '@/utils/error-utils'
-import { Prisma } from '@/utils/prisma-throws'
 
-export async function updateUserRoles(app: FastifyInstance) {
+export async function deleteDepartamento(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .patch(
+    .delete(
       '/:id',
       {
         schema: {
-          tags: ['Members'],
-          summary: 'atualizar roles de um usuário',
+          tags: ['RH', 'Departamento'],
+          summary: 'Deletar departamento pelo id',
           security: [{ bearerAuth: [] }],
           params: z.object({
             id: z.string().transform((val, ctx) => {
@@ -33,26 +32,17 @@ export async function updateUserRoles(app: FastifyInstance) {
               return parsed
             }),
           }),
-          body: z.object({
-            role: z.object({
-              id: z.number(),
-              value: z.boolean(),
-            }),
-          }),
           response: {
             204: z.any(),
           },
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('update-user')
         const { id } = request.params
-        const { role } = request.body
-
+        await request.verifyPermission('delete-departamento')
         try {
-          await Prisma.user.findError(id)
-          const update = await updateUserModel({ userId: id, role })
-          return reply.status(201).send(update)
+          await api.delete(`/departamento/${id}`)
+          return reply.code(200).send('departamento deletado com sucesso')
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)

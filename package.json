@@ -1,7 +1,7 @@
 {
   "name": "@backend-comercial",
   "scripts": {
-    "dev": "tsx --watch --trace-warnings src/routes/server.ts",
+    "dev": "tsx  --trace-warnings src/routes/server.ts",
     "build": "tsup src",
     "preview": "tsup src && node dist/routes/server.js",
     "start": "node dist/routes/server.js",

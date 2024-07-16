@@ -7,7 +7,7 @@ import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
 import { getError } from '@/utils/error-utils'
 
-export async function createSubCarreira(app: FastifyInstance) {
+export async function createCompetencia(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
@@ -15,12 +15,14 @@ export async function createSubCarreira(app: FastifyInstance) {
       '',
       {
         schema: {
-          tags: ['RH', 'Subcarreira'],
-          summary: 'Criar subcarreira',
+          tags: ['RH', 'Competencia'],
+          summary: 'Criar competencia',
           security: [{ bearerAuth: [] }],
           body: z.object({
-            nome_SubCarreira: z.string(),
-            Id_carreira: z.number(),
+            nome_competencia: z.string(),
+            criterio: z.enum(['Comportamental', 'Tecnico'], {
+              message: 'O critério só deve ser Comportamental ou Tecnico',
+            }),
           }),
           response: {
             200: z.any(),
@@ -28,11 +30,11 @@ export async function createSubCarreira(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('create-subcarreira')
+        await request.verifyPermission('create-competencia')
         const body = request.body
 
         try {
-          const { data } = await api.post('/subcarreira', body)
+          const { data } = await api.post('/competencia', body)
           return reply.code(201).send(data)
         } catch (error) {
           const { message } = getError(error)

@@ -15,18 +15,21 @@ import { reset } from '@/controllers/auth/reset-password'
 import { auth } from '@/controllers/auth/sign-in'
 import { banco } from '@/controllers/banco'
 import { carreira } from '@/controllers/carreira'
+import { categoria } from '@/controllers/categoria'
 import { category } from '@/controllers/category'
 import { cliente } from '@/controllers/client'
+import { competencia } from '@/controllers/competencia'
+import { departamento } from '@/controllers/departamento'
+import { formacao } from '@/controllers/formacao'
 import { fornecedor } from '@/controllers/fornecedor'
 import { funcao } from '@/controllers/função'
 import { funcionario } from '@/controllers/funcionario'
-import { subCarreira } from '@/controllers/subcarreira'
-import { categoria } from '@/controllers/categoria'
 import { helpers } from '@/controllers/helpers'
 import { loja } from '@/controllers/loja'
 import { organization } from '@/controllers/organization'
 import { permission } from '@/controllers/permission'
 import { role } from '@/controllers/role'
+import { subCarreira } from '@/controllers/subcarreira'
 import { subcategory } from '@/controllers/subcategory '
 import { unity } from '@/controllers/unity'
 import { getProfile } from '@/controllers/user/get-user-profile-controller'
@@ -145,7 +148,17 @@ app.register(subCarreira, {
   prefix: '/subcarreira',
 })
 
+app.register(departamento, {
+  prefix: '/departamento',
+})
 
+app.register(competencia, {
+  prefix: '/competencia',
+})
+
+app.register(formacao, {
+  prefix: '/formacao',
+})
 
 /*
 await seedImpost()

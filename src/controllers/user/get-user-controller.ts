@@ -12,14 +12,14 @@ export async function getControllersUser(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/:clientId',
+      '/:id',
       {
         schema: {
           tags: ['Members'],
           summary: 'Get member by Id',
           security: [{ bearerAuth: [] }],
           params: z.object({
-            clientId: z.string().transform((val, ctx) => {
+            id: z.string().transform((val, ctx) => {
               const parsed = parseInt(val)
               if (isNaN(parsed)) {
                 ctx.addIssue({
@@ -42,10 +42,10 @@ export async function getControllersUser(app: FastifyInstance) {
       },
       async (request, reply) => {
         await request.verifyPermission('read-user')
-        const { clientId } = request.params
+        const { id } = request.params
 
         try {
-          const users = await getUserModel(clientId)
+          const users = await getUserModel(id)
           return reply.status(200).send(users)
         } catch (error) {
           const { message } = getError(error)

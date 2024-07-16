@@ -28,6 +28,7 @@ export async function seedUsers() {
       name: 'John Doe',
       email: 'john@acme.com',
       password,
+      isSuperAdmin:true
     },
   })
 

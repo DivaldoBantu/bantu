@@ -3,21 +3,21 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { BadRequestError } from '@/_errors/bad-request-error'
-import { updateUserModel } from '@/models/user/update-user-role-model'
+import api from '@/lib/axios'
 import { auth } from '@/routes/middlewares/auth'
+import type { carreira } from '@/types/global'
 import { getError } from '@/utils/error-utils'
-import { Prisma } from '@/utils/prisma-throws'
 
-export async function updateUserRoles(app: FastifyInstance) {
+export async function updateCompetencia(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .patch(
-      '/:id',
+    .put(
+      ':id',
       {
         schema: {
-          tags: ['Members'],
-          summary: 'atualizar roles de um usuário',
+          tags: ['RH', 'Competencia'],
+          summary: 'Atualizar informações da competencia',
           security: [{ bearerAuth: [] }],
           params: z.object({
             id: z.string().transform((val, ctx) => {
@@ -33,26 +33,25 @@ export async function updateUserRoles(app: FastifyInstance) {
               return parsed
             }),
           }),
-          body: z.object({
-            role: z.object({
-              id: z.number(),
-              value: z.boolean(),
+        body: z.object({
+          nome_competencia: z.string(),
+            criterio: z.enum(['Comportamental', 'Tecnico'], {
+              message: 'O critério só deve ser Comportamental ou Tecnico',
             }),
           }),
           response: {
-            204: z.any(),
+            200: z.any(),
           },
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('update-user')
+        await request.verifyPermission('update-competencia')
+        const body = request.body
         const { id } = request.params
-        const { role } = request.body
 
         try {
-          await Prisma.user.findError(id)
-          const update = await updateUserModel({ userId: id, role })
-          return reply.status(201).send(update)
+          const { data } = await api.put(`/competencia/${id}`, body)
+          return reply.code(201).send(data)
         } catch (error) {
           const { message } = getError(error)
           throw new BadRequestError(message)
