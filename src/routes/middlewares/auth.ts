@@ -101,25 +101,25 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       'list funcionario',
       'read funcionario',
     ]
+
     const permissionsFromDb = await prisma.permission.findMany({
       select: {
         slug: true,
       },
     })
 
-    if (permissionsFromDb.length !== permissions.length) {
-      permissions.map(async (teste) => {
-        const exists = permissionsFromDb.some((result) => result.slug === teste)
-        if (!exists) {
-          console.log('new role add with slug', teste)
-          await prisma.permission.create({
-            data: {
-              slug: createSlug(teste),
-              description: teste,
-            },
-          })
-        }
-      })
+    const existingSlugs = permissionsFromDb.map(permission => permission.slug)
+    const newPermissions = permissions.filter(permission => !existingSlugs.includes(permission))
+
+    if (newPermissions.length > 0) {
+      for (const permission of newPermissions) {
+        await prisma.permission.create({
+          data: {
+            slug: createSlug(permission),
+            description: permission,
+          },
+        })
+      }
     }
 
     request.getCurrentUserId = async () => {
@@ -131,6 +131,7 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
         throw new UnauthorizedError('Token invalido')
       }
     }
+
     request.getUserPermission = async (id?: number) => {
       const userId = id ?? (await request.getCurrentUserId())
 
@@ -160,6 +161,7 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
         user,
       }
     }
+
     request.getUserRoles = async () => {
       const userId = await request.getCurrentUserId()
 
@@ -191,6 +193,7 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
         roles,
       }
     }
+
     request.verifyPermission = async (permission: string) => {
       const { permissions, user } = await request.getUserPermission()
 
