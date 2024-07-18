@@ -15,11 +15,10 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       'update role',
       'list role',
       'read role',
-      'create empresa',
       'delete empresa',
-      'update empresa',
       'list empresa',
       'read empresa',
+      'upsert empresa',
       'create user',
       'delete user',
       'update user',
@@ -93,18 +92,24 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       },
     })
 
-    const existingSlugs = new Set(permissionsFromDb.map(permission => permission.slug))
-    const newPermissions = permissions.filter(permission => !existingSlugs.has(createSlug(permission)))
+    const existingSlugs = new Set(
+      permissionsFromDb.map((permission) => permission.slug),
+    )
+    const newPermissions = permissions.filter(
+      (permission) => !existingSlugs.has(createSlug(permission)),
+    )
 
     if (newPermissions.length > 0) {
-      await prisma.$transaction(newPermissions.map(permission => 
-        prisma.permission.create({
-          data: {
-            slug: createSlug(permission),
-            description: permission,
-          },
-        })
-      ))
+      await prisma.$transaction(
+        newPermissions.map((permission) =>
+          prisma.permission.create({
+            data: {
+              slug: createSlug(permission),
+              description: permission,
+            },
+          }),
+        ),
+      )
     }
 
     request.getCurrentUserId = async () => {

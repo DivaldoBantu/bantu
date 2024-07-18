@@ -13,13 +13,14 @@ export async function listSubCategoryController(app: FastifyInstance) {
       '/list',
       {
         schema: {
-        tags: ['sub-categoria'],
+          tags: ['sub-categoria'],
           response: {
             200: z
               .object({
                 id: z.number(),
-                categoryId: z.number(),
                 name: z.string(),
+                categoryName:z.string()
+                
               })
               .array(),
           },

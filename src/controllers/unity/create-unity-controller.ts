@@ -29,9 +29,9 @@ export async function createUnityController(app: FastifyInstance) {
       },
       async (request, reply) => {
         await request.verifyPermission('create-unidade')
-        const { name, id } = request.body
+        const { name } = request.body
 
-        const unity = await createUnityModels({ id, name })
+        const unity = await createUnityModels({ name })
         return reply.code(201).send(unity)
       },
     )

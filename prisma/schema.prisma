@@ -116,11 +116,11 @@ model RolePermission {
 }
 
 model Country {
-  id            Int            @default(autoincrement())
+  id            Int            @default(autoincrement()) @unique
   code          String         @unique
   name          String
   provincias    Provincia[]
-  organizations Organization[]
+  empresas Empresa[]
   Fornecedor    Fornecedor[]
   Cliente       Cliente[]
 
@@ -196,20 +196,20 @@ model Provincia {
   name         String
 
   country       Country        @relation(fields: [countrieCode], references: [code], onDelete: Cascade)
-  organizations Organization[]
+  empresas Empresa[]
   Loja          Loja[]
 
   @@map("provincias")
   @@schema("public")
 }
 
-model Organization {
+model Empresa {
   id               Int         @id @default(autoincrement())
   codigo           String      @unique
   name             String
   type             EmpresaType
   avatar           String?
-  countryCode      String
+  countryId      Int
   provinciaId      Int
   endereco         String?
   cidade           String?
@@ -223,9 +223,8 @@ model Organization {
   indicadorFactura String      @map("indicador_factura")
 
   provincias Provincia @relation(fields: [provinciaId], references: [id])
-  country    Country   @relation(fields: [countryCode], references: [code])
+  country    Country   @relation(fields: [countryId], references: [id])
 
-  @@map("organizations")
   @@schema("public")
 }
 

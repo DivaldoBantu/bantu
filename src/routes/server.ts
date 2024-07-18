@@ -20,13 +20,13 @@ import { category } from '@/controllers/category'
 import { cliente } from '@/controllers/client'
 import { competencia } from '@/controllers/competencia'
 import { departamento } from '@/controllers/departamento'
+import { empresa } from '@/controllers/empresa'
 import { formacao } from '@/controllers/formacao'
 import { fornecedor } from '@/controllers/fornecedor'
 import { funcao } from '@/controllers/função'
 import { funcionario } from '@/controllers/funcionario'
 import { helpers } from '@/controllers/helpers'
 import { loja } from '@/controllers/loja'
-import { organization } from '@/controllers/organization'
 import { permission } from '@/controllers/permission'
 import { role } from '@/controllers/role'
 import { subCarreira } from '@/controllers/subcarreira'
@@ -35,11 +35,6 @@ import { unity } from '@/controllers/unity'
 import { getProfile } from '@/controllers/user/get-user-profile-controller'
 import { users } from '@/controllers/users'
 
-// import { seedAccounts } from 'prisma/seeds/account.seed'
-// import { seedClasse } from 'prisma/seeds/class.seed'
-// import { seedImpost } from 'prisma/seeds/impost-type.seed'
-// import { seedIsencao } from 'prisma/seeds/isencao.seed'
-// import { seedSubContas } from 'prisma/seeds/sub-conta.seed'
 import { errorHandler } from './error-handler'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -84,8 +79,8 @@ app.register(users, {
   prefix: '/user',
 })
 
-app.register(organization, {
-  prefix: '/organization',
+app.register(empresa, {
+  prefix: '/empresa',
 })
 
 app.register(unity, {

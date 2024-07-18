@@ -6,7 +6,7 @@ import { BadRequestError } from '@/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/routes/middlewares/auth'
 
-export async function createOrganizationController(app: FastifyInstance) {
+export async function upsertEmpresaController(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
@@ -14,8 +14,8 @@ export async function createOrganizationController(app: FastifyInstance) {
       '',
       {
         schema: {
-          tags: ['Organização'],
-          summary: 'criar organização',
+          tags: ['Empresa'],
+          summary: 'upsert empresa',
           security: [{ bearerAuth: [] }],
           body: z.object({
             codigo: z.string(),
@@ -41,7 +41,8 @@ export async function createOrganizationController(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        await request.verifyPermission('create-empresa')
+        await request.verifyPermission('upsert-empresa')
+
         const { countryId, provinciaId, ...data } = request.body
 
         const country = await prisma.country.findFirst({
@@ -67,9 +68,15 @@ export async function createOrganizationController(app: FastifyInstance) {
         if (!country)
           throw new BadRequestError('País ou província não encontrada')
 
-        const organization = await prisma.organization.create({
-          data: {
-            countryCode: country.code,
+        const organization = await prisma.empresa.upsert({
+          where: { id: 1 },
+          create: {
+            countryId: country.id,
+            provinciaId: country.provincias[0].id,
+            ...data,
+          },
+          update: {
+            countryId: country.id,
             provinciaId: country.provincias[0].id,
             ...data,
           },
